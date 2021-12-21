@@ -1,4 +1,4 @@
-package ua.training.petproject.upload;
+package ua.training.petproject.upload.rest;
 
 import java.util.Set;
 import lombok.Data;

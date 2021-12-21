@@ -1,17 +1,21 @@
-package ua.training.petproject.upload;
+package ua.training.petproject.upload.service;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
 import javax.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import ua.training.petproject.upload.rest.UploadRequest;
 
 @Service
+@RequiredArgsConstructor
 public class LocalUploadService implements UploadService {
 
+    private final MetadataService metadataService;
     @Value("${local.uploadDir}")
     private String uploadDir;
 
@@ -29,8 +33,10 @@ public class LocalUploadService implements UploadService {
     @Override
     @SneakyThrows
     public String uploadFile(UploadRequest request) {
-        Path destination = Paths.get(uploadDir, UUID.randomUUID().toString());
+        String filename = UUID.randomUUID().toString();
+        Path destination = Paths.get(uploadDir, filename);
         request.getFile().transferTo(destination);
-        return destination.toAbsolutePath().toString();
+        metadataService.storeImmediately(filename, request);
+        return filename;
     }
 }

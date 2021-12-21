@@ -16,4 +16,6 @@ public class Metadata {
     private String description;
     @Field(type = FieldType.Keyword)
     private Set<String> tags;
+    @Field(type = FieldType.Text)
+    private String filename;
 }

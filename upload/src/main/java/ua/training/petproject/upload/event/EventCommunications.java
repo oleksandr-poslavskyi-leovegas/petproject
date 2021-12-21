@@ -1,4 +1,4 @@
-package ua.training.petproject.upload;
+package ua.training.petproject.upload.event;
 
 import org.springframework.cloud.stream.annotation.Input;
 import org.springframework.messaging.SubscribableChannel;
