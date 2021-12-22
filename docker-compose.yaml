@@ -1,0 +1,52 @@
+version: '3.7'
+services:
+  elastic:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.13.1
+    container_name: elastic01
+    environment:
+      - node.name=elastic01
+      - cluster.name=es-docker-cluster
+      - cluster.initial_master_nodes=elastic01
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - data01:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+#    Use docker host network
+    build:
+      network: host
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.13.1
+    container_name: kibana
+    ports:
+      - 5601:5601
+    environment:
+      ELASTICSEARCH_URL: http://elastic01:9200
+      ELASTICSEARCH_HOSTS: '["http://elastic01:9200"]'
+#    Use docker host network
+    build:
+      network: host
+
+  consul-server:
+    image: consul:1.9.3
+    container_name: consul-server
+    restart: always
+    ports:
+      - '8500:8500'
+      - '8600:8600/tcp'
+      - '8600:8600/udp'
+#   Client is not required when running services on same host
+    command: 'agent -server -ui -node=server-1 -bootstrap-expect=1 -client=0.0.0.0'
+#    Use docker host network
+    build:
+      network: host
+
+volumes:
+  data01:
+    driver: local
