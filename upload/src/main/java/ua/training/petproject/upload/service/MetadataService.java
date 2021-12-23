@@ -17,7 +17,7 @@ import ua.training.petproject.upload.rest.UploadRequest;
 @RequiredArgsConstructor
 public class MetadataService {
 
-    private static final String SEARCH_SERVICE_URL = "http://localhost:9091/";
+    private static final String SEARCH_SERVICE_URL = "http://search/";
 
     private final Map<String, UploadRequest> targetFilenameMetadataMap = Collections.synchronizedMap(new HashMap<>());
     private final RestTemplate restTemplate;
@@ -32,11 +32,10 @@ public class MetadataService {
     }
 
     public void storeMetadataByFilename(String filename) {
-        if (targetFilenameMetadataMap.containsKey(filename)) {
-            storeMetadata(filename, targetFilenameMetadataMap.get(filename));
-        } else {
+        if (!targetFilenameMetadataMap.containsKey(filename)) {
             throw new IllegalStateException("Metadata not found for filename: " + filename);
         }
+        storeMetadata(filename, targetFilenameMetadataMap.get(filename));
     }
 
     @SneakyThrows

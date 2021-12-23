@@ -3,6 +3,7 @@ package ua.training.petproject.upload;
 import java.util.function.Consumer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 import ua.training.petproject.upload.service.MetadataService;
@@ -11,6 +12,7 @@ import ua.training.petproject.upload.service.MetadataService;
 public class Application {
 
 	@Bean
+	@LoadBalanced
 	public RestTemplate restTemplate() {
 		return new RestTemplate();
 	}
