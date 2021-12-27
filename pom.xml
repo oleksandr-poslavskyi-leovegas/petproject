@@ -50,6 +50,7 @@
     <modules>
         <module>upload</module>
         <module>search</module>
+        <module>download</module>
     </modules>
 
     <build>
