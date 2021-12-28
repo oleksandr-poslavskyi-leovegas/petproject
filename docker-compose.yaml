@@ -47,6 +47,16 @@ services:
     build:
       network: host
 
+  zipkin:
+    image: openzipkin/zipkin:2.23
+    container_name: zipkin
+    restart: always
+    ports:
+      - '9411:9411'
+#    Use docker host network
+    build:
+      network: host
+
 volumes:
   data01:
     driver: local
