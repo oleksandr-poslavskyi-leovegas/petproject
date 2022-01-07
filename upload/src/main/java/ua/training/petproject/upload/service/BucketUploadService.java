@@ -6,12 +6,10 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import ua.training.petproject.upload.rest.UploadRequest;
 
 @Service
-@Primary
 @RequiredArgsConstructor
 public class BucketUploadService implements UploadService {
 

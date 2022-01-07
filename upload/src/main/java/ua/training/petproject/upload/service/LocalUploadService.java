@@ -8,10 +8,14 @@ import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import ua.training.petproject.upload.rest.UploadRequest;
 
 @Service
+@Profile("local")
+@Primary
 @RequiredArgsConstructor
 public class LocalUploadService implements UploadService {
 
