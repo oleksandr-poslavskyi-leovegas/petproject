@@ -1,6 +1,7 @@
 package ua.training.petproject.upload.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +22,7 @@ public class MetadataService {
 
     private final Map<String, UploadRequest> targetFilenameMetadataMap = Collections.synchronizedMap(new HashMap<>());
     private final RestTemplate restTemplate;
+    private final CircuitBreaker circuitBreaker;
     private final ObjectMapper objectMapper;
 
     public void storeImmediately(String filename, UploadRequest request) {
@@ -47,6 +49,6 @@ public class MetadataService {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> body = new HttpEntity<>(objectMapper.writeValueAsString(payload), headers);
-        restTemplate.postForLocation(SEARCH_SERVICE_URL + "save", body);
+        CircuitBreaker.decorateSupplier(circuitBreaker, () -> restTemplate.postForLocation(SEARCH_SERVICE_URL + "save", body)).get();
     }
 }
